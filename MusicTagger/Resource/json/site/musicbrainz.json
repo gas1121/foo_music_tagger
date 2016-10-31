@@ -1,0 +1,7 @@
+{
+    "host":"musicbrainz.org",
+    "type":"json",
+    "useProxy":false,
+    "tocSearchUrlTemplate":"/ws/2/discid/-?toc={$1}&inc=recordings+artists&fmt=json",
+    "needDetailQuery":false
+}

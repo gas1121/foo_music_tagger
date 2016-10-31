@@ -1,0 +1,8 @@
+{
+    "host":"freedb.musicbrainz.org",
+    "type":"cddb",
+    "useProxy":false,
+    "tocSearchUrlTemplate":"http://freedb.musicbrainz.org/~cddb/cddb.cgi?cmd=cddb query {$1}&hello=auto auto foo_music_tagger 0.0.1&proto=6",
+    "needDetailQuery":true,
+    "detailUrlTemplate":"http://freedb.musicbrainz.org/~cddb/cddb.cgi?cmd=cddb read {$1}&hello=auto auto foo_music_tagger 0.0.1&proto=6"
+}

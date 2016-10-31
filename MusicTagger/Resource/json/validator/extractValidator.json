@@ -1,0 +1,17 @@
+{
+    //Do not modify this file!
+    "$schema": "http://json-schema.org/schema#",
+    "type":"object",
+    "properties": {
+        "count": { 
+            "type":"integer",
+            "minimum": 1
+        },
+        "trackLength":{
+            "type":"array",
+            "items":{
+                "type":"number"
+            }
+        }
+    }
+}

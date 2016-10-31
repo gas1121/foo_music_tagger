@@ -1,0 +1,10 @@
+{
+    "host":"freedbtest.dyndns.org",
+    "type":"cddb",
+    "useProxy":true,
+    "proxy":"127.0.0.1",
+    "proxyPort":"8087",
+    "tocSearchUrlTemplate":"http://freedbtest.dyndns.org/~cddb/cddb.cgi?cmd=cddb query {$1}&hello=auto auto foo_music_tagger 0.0.1&proto=6",
+    "needDetailQuery":true,
+    "detailUrlTemplate":"http://freedbtest.dyndns.org/~cddb/cddb.cgi?cmd=cddb read {$1}&hello=auto auto foo_music_tagger 0.0.1&proto=6"
+}

@@ -1,0 +1,50 @@
+{
+    //Do not modify this file!
+    "$schema": "http://json-schema.org/schema#",
+    "type":"object",
+    "properties": {
+        "releases":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "properties": {
+                    "id":{
+                        "type":"string"
+                    },
+                    "name":{
+                        "type":"string"
+                    },
+                    "trackCount":{
+                        "type":"integer"
+                    },
+                    "artist":{
+                        "type":"string"
+                    },
+                    "track":{
+                        "type":"array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "trackName":{
+                                    "type": "string"
+                                },
+                                "trackArtist":{
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "trackName"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "name","trackCount","artist","track"
+                ]
+            }
+        }
+    },
+    "required": [
+        "releases"
+    ]
+}

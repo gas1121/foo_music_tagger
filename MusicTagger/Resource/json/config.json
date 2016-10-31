@@ -1,0 +1,17 @@
+{
+    "site":[
+        {
+            "name":"freedbjp",
+            "type":"cddb"
+        },
+        {
+            "name":"musicbrainz",
+            "type":"json"
+        },
+        {
+            "name":"freedbmusicbrainz",
+            "type":"cddb"
+        }
+    ],
+    "timeout":20
+}

@@ -1,0 +1,76 @@
+{
+    //Do not modify this file!
+    "$schema": "http://json-schema.org/schema#",
+    "title":"Music tag query source site validator",
+    "type":"object",
+    "oneOf": [{
+        "properties": {
+            "host": { 
+                "type":"string",
+                "format":"hostname"
+            },
+            "type":{
+                "type":"string",
+                "enum":["json","cddb"]
+            },
+            "useProxy":{
+                "type":"boolean"
+            },
+            "proxy":{
+                "type":"string",
+                "format":"ipv4"
+            },
+            "proxyPort":{
+                "type":"string"
+            },
+            "tocSearchUrlTemplate":{
+                "type": "string"
+            },
+            "needDetailQuery":{
+                "type":"boolean",
+                "enum": [
+                    false
+                ]
+            }
+        },
+        "required": [
+            "host", "type", "useProxy", "tocSearchUrlTemplate","needDetailQuery"
+        ]
+    }, {
+        "properties": {
+            "host": { 
+                "type":"string",
+                "format":"hostname"
+            },
+            "type":{
+                "type":"string",
+                "enum":["json","cddb"]
+            },
+            "useProxy":{
+                "type":"boolean"
+            },
+            "proxy":{
+                "type":"string",
+                "format":"ipv4"
+            },
+            "proxyPort":{
+                "type":"string"
+            },
+            "tocSearchUrlTemplate":{
+                "type": "string"
+            },
+            "needDetailQuery":{
+                "type":"boolean",
+                "enum": [
+                    true
+                ]
+            },
+            "detailUrlTemplate":{
+                "type": "string"
+            }
+        },
+        "required": [
+            "host", "type", "useProxy", "tocSearchUrlTemplate","needDetailQuery","detailUrlTemplate"
+        ]
+    }]
+}

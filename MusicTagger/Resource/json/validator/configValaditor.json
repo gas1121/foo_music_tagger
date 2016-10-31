@@ -1,0 +1,31 @@
+{
+    //Do not modify this file!
+    "$schema": "http://json-schema.org/schema#",
+    "type":"object",
+    "properties": {
+        "timeout": { 
+            "type":"integer",
+            "minimum": 0
+        },
+        "site":{
+            "type":"array",
+            "items":{
+                "type":"object",
+                "properties": {
+                    "name":{
+                        "type":"string"
+                    },
+                    "type":{
+                        "type":"string"
+                    }
+                },
+                "required": [
+                    "name","type"
+                ]
+            }
+        }
+    },
+    "required": [
+        "timeout","site"
+    ]
+}
