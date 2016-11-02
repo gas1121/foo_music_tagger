@@ -6,3 +6,25 @@ if (!(Test-Path $catchHeaderPath)) {
     mkdir ThirdParty\Catch
     Invoke-WebRequest $source -OutFile $destination
 }
+
+$beastPath = "ThirdParty\Beast"
+if (!(Test-Path $beastPath)) {
+    cd ThirdParty
+    git clone https://github.com/vinniefalco/Beast.git
+    cd ..
+}
+
+$foobar2000SDKPath = "ThirdParty\foobar2000"
+if (!(Test-Path $foobar2000SDKPath)) {
+    cd ThirdParty
+    git clone https://github.com/gas1121/foobar2000-dependency.git
+    Move-Item -Path "foobar2000-dependency\*" -Destination .
+    cd ..
+}
+
+$rapidjsonPath = "ThirdParty\rapidjson"
+if (!(Test-Path $rapidjsonPath)) {
+    cd ThirdParty
+    git clone https://github.com/miloyip/rapidjson.git
+    cd ..
+}
