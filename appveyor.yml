@@ -1,33 +1,77 @@
-os: Visual Studio 2015
 version: 0.0.1.{build}
-
-clone_folder: c:\foo_music_tagger
-
 configuration:
 - Debug
 - Release
-
+clone_folder: c:\foo_music_tagger
 environment:
   BOOST_ROOT: C:\Libraries\boost_1_60_0
   BOOST_INCLUDEDIR: C:\Libraries\boost_1_60_0
-  BOOST_LIBRARYDIR: C:\Libraries\boost_1_60_0\lib32-msvc-14.0
+  BOOST_LIBRARYDIR: C:\boostLibrary\lib
   VS_VERSION: 14 2015
   VS_PLATFORM: win32
-
 install:
-- ps: c:\foo_music_tagger\Scripts\installDependency.ps1
+- ps: >-
+    $project_path = "c:\\foo_music_tagger"
 
-before_build:
-- cmake -H. -BBuild/VS -G "Visual Studio %VS_VERSION%" -DCMAKE_GENERATOR_PLATFORM=%VSPLATFORM% -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=true -Wno-dev -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%"
+    $boost_libarary_path = "C:\boostLibrary"
+    if (!(Test-Path $boost_libarary_path)) {
+        cd C:\Libraries\boost_1_60_0
+        .\bootstrap.bat
+        .\b2.exe --build-type=complete --with-thread --with-context --with-system --with-date_time --with-regex --with-chrono --with-thread --with-filesystem --with-program_options --with-coroutine asmflags=\safeseh --stagedir=$boost_libarary_path
+        cd $project_path
+    }
 
+
+    $catchHeaderPath = "ThirdParty\Catch\catch.hpp"
+    if (!(Test-Path $catchHeaderPath)) {
+        echo "Catch not cached."
+        $source = "https://raw.githubusercontent.com/philsquared/Catch/v1.5.6/single_include/catch.hpp"
+        $destination = $project_path + "\ThirdParty\Catch\catch.hpp"
+        mkdir ThirdParty\Catch
+        Invoke-WebRequest $source -OutFile $destination
+    }
+
+    $beastPath = "ThirdParty\Beast"
+    if (!(Test-Path $beastPath)) {
+        echo "Beast not cached."
+        cd ThirdParty
+        git clone --branch=stable https://github.com/gas1121/Beast.git
+        cd ..
+    }
+
+    $foobar2000SDKPath = "ThirdParty\foobar2000"
+    if (!(Test-Path $foobar2000SDKPath)) {
+        echo "foobar2000 not cached."
+        cd ThirdParty
+        git clone https://github.com/gas1121/foobar2000-dependency.git
+        Move-Item -Path "foobar2000-dependency\*" -Destination .
+        cd ..
+    }
+
+    $rapidjsonPath = "ThirdParty\rapidjson"
+    if (!(Test-Path $rapidjsonPath)) {
+        echo "rapidjson not cached."
+        cd ThirdParty
+        git clone https://github.com/miloyip/rapidjson.git
+        cd ..
+    }
 cache:
-  - ThirdParty\Catch -> appveyor.yml
-
+- ThirdParty\Catch -> appveyor.yml
+- ThirdParty\Beast -> appveyor.yml
+- ThirdParty\foobar2000 -> appveyor.yml
+- ThirdParty\pfc -> appveyor.yml
+- ThirdParty\rapidjson -> appveyor.yml
+- ThirdParty\wtl -> appveyor.yml
+- C:\boostLibrary -> appveyor.yml
+before_build:
+- cmd: cmake -H. -BBuild/VS -G "Visual Studio %VS_VERSION%" -DCMAKE_GENERATOR_PLATFORM=%VSPLATFORM% -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=true -Wno-dev -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%"
 build:
   project: Build\VS\INSTALL.vcxproj
   parallel: true
   verbosity: minimal
-
 test_script:
-- cd Build\VS
-- ctest --verbose --build-config %CONFIGURATION%
+- ps: >-
+    <#
+    cd Build\VS
+    ctest --verbose --build-config $Env:CONFIGURATION
+    #>
