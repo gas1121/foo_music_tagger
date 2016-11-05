@@ -19,7 +19,6 @@ namespace MusicTagger {
         Query();
 		~Query() = default;
 
-        //#TODO remove this function, use config file to set query source
 		void AddQuerySource(const QuerySourceType type, const std::string& sourceName, const std::string& queryData);
 
         MusicTaggerErrorCode Start();

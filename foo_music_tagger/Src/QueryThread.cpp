@@ -6,6 +6,7 @@
 #include <rapidjson/stringbuffer.h>
 #include <future>
 #include <chrono>
+#include "MusicTagger/Config.h"
 #include "MusicTagger/Query.h"
 #include "TaggerDialog.h"
 
@@ -33,12 +34,14 @@ namespace MusicTagger {
             return;
         }
 
-		//set query source
-		Query query;
-        //#TODO limit source based on track number
-		//query.AddQuerySource(QuerySourceType::kCDDB, "freedbjp", queryJson);
-        //query.AddQuerySource(QuerySourceType::kCDDB, "freedbmusicbrainz", queryJson);
-		query.AddQuerySource(QuerySourceType::kJson, "musicbrainz", queryJson);
+        Config config;
+        Config::ConfigData configData = config.GetConfigData();
+        Query query;
+        //set query source
+        for (const auto& source : configData.sourceList)
+        {
+            query.AddQuerySource(source.type, source.name, queryJson);
+        }
 
 		std::future<MusicTaggerErrorCode> queryResult = std::async(std::launch::async, &Query::Start, &query);
 		std::future_status status;
