@@ -14,6 +14,7 @@ install:
     $project_path = "c:\\foo_music_tagger"
 
     $boost_libarary_path = "C:\boostLibrary"
+
     if (!(Test-Path $boost_libarary_path)) {
         cd C:\Libraries\boost_1_60_0
         .\bootstrap.bat
@@ -23,6 +24,7 @@ install:
 
 
     $catchHeaderPath = "ThirdParty\Catch\catch.hpp"
+
     if (!(Test-Path $catchHeaderPath)) {
         echo "Catch not cached."
         $source = "https://raw.githubusercontent.com/philsquared/Catch/v1.5.6/single_include/catch.hpp"
@@ -32,6 +34,7 @@ install:
     }
 
     $beastPath = "ThirdParty\Beast"
+
     if (!(Test-Path $beastPath)) {
         echo "Beast not cached."
         cd ThirdParty
@@ -40,6 +43,7 @@ install:
     }
 
     $foobar2000SDKPath = "ThirdParty\foobar2000"
+
     if (!(Test-Path $foobar2000SDKPath)) {
         echo "foobar2000 not cached."
         cd ThirdParty
@@ -49,6 +53,7 @@ install:
     }
 
     $rapidjsonPath = "ThirdParty\rapidjson"
+
     if (!(Test-Path $rapidjsonPath)) {
         echo "rapidjson not cached."
         cd ThirdParty
@@ -72,6 +77,9 @@ build:
 test_script:
 - ps: >-
     <#
+
     cd Build\VS
+
     ctest --verbose --build-config $Env:CONFIGURATION
+
     #>
