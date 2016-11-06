@@ -119,7 +119,7 @@ namespace MusicTagger {
 		for (t_size i = 0; i < tracks_.get_count(); ++i) 
 		{
 			const double currTrackSeconds = tracks_[i]->get_length();
-			//#TODO improve accuracy with double
+			//#TODO use double type to improve accuracy
 			Pointer("/trackLength/-").Set(d, (int)currTrackSeconds);
 		}
 

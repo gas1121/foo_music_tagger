@@ -40,19 +40,20 @@ namespace MusicTagger {
 			instance->StartQueryInstance();
 		}
 		service_.run();
-		result_.clear();
         for (auto instance : instanceArray_)
         {
-            if (instance->ErrorCode()==MusicTaggerErrorCode::kNoError)
+            if (instance->Status()==QueryInstance::InstanceStatus::kFinished)
             {
-                result_ += instance->GetResult();
+                //if multiple instances finished, we only use one of them
+                result_ = instance->GetResult();
+                break;
             }
         }
 		if (result_.empty()&&(!instanceArray_.empty()))
 		{
-			return MusicTaggerErrorCode::kNetworkError;
+            // return first query instance's error code
+            return instanceArray_.front()->ErrorCode();
 		}
-		//#TODO valify result format
 		return MusicTaggerErrorCode::kNoError;
 	}
 
@@ -107,7 +108,11 @@ namespace MusicTagger {
 		{
 			return result;
 		}
-		//#TODO valify jsonString format
+		//verify jsonString format
+        if (ValidateJsonBySchemaFile(releaseListDocument, "resultValidator"))
+        {
+            return result;
+        }
 
 		Value::ConstMemberIterator iter = releaseListDocument.FindMember("releaseList");
 		if (iter==releaseListDocument.MemberEnd())

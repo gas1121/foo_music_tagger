@@ -3,48 +3,43 @@
     "$schema": "http://json-schema.org/schema#",
     "type":"object",
     "properties": {
-        "releases":{
+        "releaseList":{
             "type":"array",
             "items":{
                 "type":"object",
                 "properties": {
-                    "id":{
+                    "title":{
                         "type":"string"
                     },
-                    "name":{
+                    "albumArtist":{
                         "type":"string"
                     },
-                    "trackCount":{
+                    "date":{
                         "type":"integer"
                     },
-                    "artist":{
+                    "genre":{
                         "type":"string"
                     },
-                    "track":{
+                    "trackTitles":{
                         "type":"array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "trackName":{
-                                    "type": "string"
-                                },
-                                "trackArtist":{
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "trackName"
-                            ]
+                            "type": "string"
+                        }
+                    },
+                    "trackArtists":{
+                        "type":"array",
+                        "items": {
+                            "type": "string"
                         }
                     }
                 },
                 "required": [
-                    "name","trackCount","artist","track"
+                    "title","albumArtist","trackTitles"
                 ]
             }
         }
     },
-    "required": [
+    "releaseList": [
         "releases"
     ]
 }

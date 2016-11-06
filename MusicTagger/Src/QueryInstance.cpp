@@ -35,7 +35,6 @@ namespace MusicTagger {
             auto iter = r.async_resolve(tcp::resolver::query{ host, port }, yield[ec]);
             if (ec)
             {
-                std::cout << ec.message() << std::endl;
                 ec_ = MusicTaggerErrorCode::kNetworkError;
                 return;
             }
@@ -45,7 +44,6 @@ namespace MusicTagger {
             async_connect(sock, iter, yield[ec]);
             if (ec)
             {
-                std::cout << ec.message() << std::endl;
                 ec_ = MusicTaggerErrorCode::kNetworkError;
                 return;
             }
@@ -64,7 +62,6 @@ namespace MusicTagger {
             beast::http::async_write(sock, req, yield[ec]);
             if (ec)
             {
-                std::cout << ec.message() << std::endl;
                 ec_ = MusicTaggerErrorCode::kNetworkError;
                 return;
             }
@@ -74,7 +71,6 @@ namespace MusicTagger {
             beast::http::async_read(sock, sb, res, yield[ec]);
             if (ec)
             {
-                std::cout << ec.message() << std::endl;
                 ec_ = MusicTaggerErrorCode::kNetworkError;
                 return;
             }
@@ -91,7 +87,6 @@ namespace MusicTagger {
                     beast::http::async_write(sock, req, yield[ec]);
                     if (ec)
                     {
-                        std::cout << ec.message() << std::endl;
                         ec_ = MusicTaggerErrorCode::kNetworkError;
                         return;
                     }
@@ -99,7 +94,6 @@ namespace MusicTagger {
                     beast::http::async_read(sock, sb, res, yield[ec]);
                     if (ec)
                     {
-                        std::cout << ec.message() << std::endl;
                         ec_ = MusicTaggerErrorCode::kNetworkError;
                         return;
                     }

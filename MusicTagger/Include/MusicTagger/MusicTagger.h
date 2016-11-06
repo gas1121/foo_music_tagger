@@ -22,7 +22,8 @@ namespace MusicTagger {
         kJsonFileNotExist,//!< can't find json file
         kJsonFileInvalid,//!< json file do not contain valid json string
         kJsonSchemaCheckFailed,//!< json schema check failed
-        kNetworkError//!< failed to connect target site
+        kNetworkError,//!< failed to connect target site
+        kUnknownError
     };
 
     inline const std::string GetMusicTaggerErrorMessage(MusicTaggerErrorCode errorCode)
@@ -39,6 +40,7 @@ namespace MusicTagger {
             return "Json schema check failed.";
         case MusicTagger::MusicTaggerErrorCode::kNetworkError:
             return "Network connect failed.";
+        case MusicTaggerErrorCode::kUnknownError:
         default:
             return "Unknown error.";
         }

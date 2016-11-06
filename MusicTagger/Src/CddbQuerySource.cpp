@@ -22,21 +22,15 @@ namespace MusicTagger {
 		assert(Status() == MusicTaggerErrorCode::kNoError);
 		string urlTemplate = *GetOptionalStringValue(setting_, "/tocSearchUrlTemplate");
 
-		//#TODO
 		const boost::optional<int> opCount = GetOptionalIntValue(extractedData_, "/count");
-		if (!opCount)
-		{
-			//#TODO
-		}
-		const int count = *opCount;
+        assert(opCount);
+		
+        const int count = *opCount;
 		std::vector<int> trackLength;
 		for (int i = 0; i < count; i++)
 		{
 			const boost::optional<int> opCurrTrackLength = GetOptionalIntValue(extractedData_, "/trackLength/" + std::to_string(i));
-			if (!opCurrTrackLength)
-			{
-				//#TODO
-			}
+            assert(opCurrTrackLength);
 			trackLength.push_back(*opCurrTrackLength);
 		}
 		assert((int)trackLength.size() == count);
