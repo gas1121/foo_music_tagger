@@ -11,7 +11,6 @@ namespace MusicTagger {
 	std::string ComputeTrackOffsetString(std::vector<int> trackSeconds);
 	std::string ComputeTrackOffsetString(std::vector<int> trackSeconds, const std::string delimiter);
 
-	std::string GBKToUTF8(const char* strGBK);
 	std::string UrlEncode(const std::string& szToEncode);
 	std::string UrlDecode(const std::string& szToDecode);
 

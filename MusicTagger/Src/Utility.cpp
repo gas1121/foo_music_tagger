@@ -3,9 +3,6 @@
 
 #include "Utility.h"
 
-//#TODO remove windows header use std::codecvt std::c32rtomb u8 string std::locale
-//see http://bbs.csdn.net/topics/391040755
-#include <windows.h>
 #include <sstream>
 #include <boost/filesystem.hpp>
 #include <rapidjson/pointer.h>
@@ -154,24 +151,6 @@ namespace MusicTagger {
 			return value->GetBool();
 		}
 		return boost::none;
-	}
-
-	string GBKToUTF8(const char* strGBK)
-	{
-		string strOutUTF8 = "";
-		wchar_t * str1;
-		int n = MultiByteToWideChar(CP_ACP, 0, strGBK, -1, nullptr, 0);
-		str1 = new wchar_t[n];
-		MultiByteToWideChar(CP_ACP, 0, strGBK, -1, str1, n);
-		n = WideCharToMultiByte(CP_UTF8, 0, str1, -1, nullptr, 0, nullptr, nullptr);
-		char * str2 = new char[n];
-		WideCharToMultiByte(CP_UTF8, 0, str1, -1, str2, n, nullptr, nullptr);
-		strOutUTF8 = str2;
-		delete[]str1;
-		str1 = nullptr;
-		delete[]str2;
-		str2 = nullptr;
-		return strOutUTF8;
 	}
 
 	string UrlEncode(const string& szToEncode)

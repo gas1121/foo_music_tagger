@@ -46,7 +46,7 @@ namespace MusicTagger {
 		boost::replace_first(urlTemplate, "{$1}", replaceString);
 		boost::replace_all(urlTemplate, " ", "+");
 
-		return UrlEncode(GBKToUTF8(urlTemplate.c_str()));
+		return UrlEncode(urlTemplate.c_str());
     }
 
     std::vector<std::string> JsonQuerySource::ConstructDetailQueryUrls(const std::string& response) const

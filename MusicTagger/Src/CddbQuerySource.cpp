@@ -43,8 +43,7 @@ namespace MusicTagger {
 		const string replaceString = freedbID + " " + countString + " " + offsetString + " " + totalLengthString;
 		boost::replace_first(urlTemplate, "{$1}", replaceString);
 
-		//#TODO gbk? shift_js?
-		return UrlEncode(GBKToUTF8(urlTemplate.c_str()));
+		return UrlEncode(urlTemplate.c_str());
     }
 
     std::vector<std::string> CddbQuerySource::ConstructDetailQueryUrls(const std::string& response) const
@@ -73,7 +72,7 @@ namespace MusicTagger {
             const string replaceString = dividedWords[0] + " " + dividedWords[1];
             boost::replace_first(urlTemplate, "{$1}", replaceString);
 
-            result.push_back(UrlEncode(GBKToUTF8(urlTemplate.c_str())));
+            result.push_back(UrlEncode(urlTemplate.c_str()));
         }
 		
         return result;
