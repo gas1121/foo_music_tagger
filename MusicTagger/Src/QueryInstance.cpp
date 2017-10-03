@@ -53,7 +53,6 @@ namespace MusicTagger {
             http::request<http::string_body> req(http::verb::get, source_->SetupQueryString(), 11);
             req.set(http::field::host, source_->GetFinalAddress());
             req.set(http::field::user_agent, "foo_music_tagger");
-            auto ep = sock.remote_endpoint();
 
             http::async_write(sock, req, yield[ec]);
             if (ec)
@@ -79,7 +78,9 @@ namespace MusicTagger {
                 assert(!detailQueryUrls.empty());
                 for (const auto& currUrl:detailQueryUrls)
                 {
-                    req.set(http::field::uri, currUrl);
+                    http::request<http::string_body> req(http::verb::get, currUrl, 11);
+                    req.set(http::field::host, source_->GetFinalAddress());
+                    req.set(http::field::user_agent, "foo_music_tagger");
                     http::async_write(sock, req, yield[ec]);
                     if (ec)
                     {
@@ -87,14 +88,15 @@ namespace MusicTagger {
                         return;
                     }
 
-                    http::async_read(sock, buff, res, yield[ec]);
+                    http::response<http::string_body> detail_res;
+                    http::async_read(sock, buff, detail_res, yield[ec]);
                     if (ec)
                     {
                         ec_ = MusicTaggerErrorCode::kNetworkError;
                         return;
                     }
 
-                    source_->AddReleasesFromResponse(res.body());
+                    source_->AddReleasesFromResponse(detail_res.body());
                     buff.consume(buff.size());
                 }
             }

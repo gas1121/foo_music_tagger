@@ -97,7 +97,7 @@ namespace MusicTagger {
         bool isFileExist = false;
         for (std::string currPath : kJsonFilePath)
         {
-            string filePath = currPath + "/" + kValidatorSuffix + "/" + validateFileName + ".json";
+            string filePath = currPath + kValidatorSuffix + "/" + validateFileName + ".json";
             if (ReadJsonFromFile(filePath, &schemaDocument))
             {
                 isFileExist = true;
