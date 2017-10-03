@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <chrono>
+#include <boost/beast.hpp>
 #include <boost/asio/spawn.hpp>
-#include <beast/http.hpp>
 
 using std::string;
 
@@ -24,6 +24,7 @@ namespace MusicTagger {
         using boost::system::error_code;
         using namespace boost::asio;
         using boost::asio::ip::tcp;
+        namespace http = boost::beast::http;
 
         auto self = shared_from_this();
         spawn(*service_,
@@ -49,26 +50,21 @@ namespace MusicTagger {
             }
 
             status_ = InstanceStatus::kConnected;
-            beast::http::request_v1<beast::http::empty_body> req;
-            req.method = "GET";
-            req.url = source_->SetupQueryString();
-            req.version = 11;
+            http::request<http::string_body> req(http::verb::get, source_->SetupQueryString(), 11);
+            req.set(http::field::host, source_->GetFinalAddress());
+            req.set(http::field::user_agent, "foo_music_tagger");
             auto ep = sock.remote_endpoint();
-            string finalHost = source_->GetFinalAddress();
-            req.headers.insert("Host", finalHost +
-                string(":") + std::to_string(ep.port()));
-            req.headers.insert("User-Agent", "foo_music_tagger");
-            beast::http::prepare(req);
-            beast::http::async_write(sock, req, yield[ec]);
+
+            http::async_write(sock, req, yield[ec]);
             if (ec)
             {
                 ec_ = MusicTaggerErrorCode::kNetworkError;
                 return;
             }
 
-            beast::streambuf sb;
-            beast::http::response_v1<beast::http::string_body> res;
-            beast::http::async_read(sock, sb, res, yield[ec]);
+            boost::beast::flat_buffer buff;
+            http::response<http::string_body> res;
+            http::async_read(sock, buff, res, yield[ec]);
             if (ec)
             {
                 ec_ = MusicTaggerErrorCode::kNetworkError;
@@ -76,36 +72,36 @@ namespace MusicTagger {
             }
 
             status_ = InstanceStatus::kGetReleaseList;
-            sb.consume(sb.size());
+            buff.consume(buff.size());
             if (source_->NeedDetailQuery())
             {
-                std::vector<std::string> detailQueryUrls = source_->ConstructDetailQueryUrls(res.body);
+                std::vector<std::string> detailQueryUrls = source_->ConstructDetailQueryUrls(res.body());
                 assert(!detailQueryUrls.empty());
                 for (const auto& currUrl:detailQueryUrls)
                 {
-                    req.url = currUrl;
-                    beast::http::async_write(sock, req, yield[ec]);
+                    req.set(http::field::uri, currUrl);
+                    http::async_write(sock, req, yield[ec]);
                     if (ec)
                     {
                         ec_ = MusicTaggerErrorCode::kNetworkError;
                         return;
                     }
 
-                    beast::http::async_read(sock, sb, res, yield[ec]);
+                    http::async_read(sock, buff, res, yield[ec]);
                     if (ec)
                     {
                         ec_ = MusicTaggerErrorCode::kNetworkError;
                         return;
                     }
 
-                    source_->AddReleasesFromResponse(res.body);
-                    sb.consume(sb.size());
+                    source_->AddReleasesFromResponse(res.body());
+                    buff.consume(buff.size());
                 }
             }
             else
             {
-                source_->AddReleasesFromResponse(res.body);
-                sb.consume(sb.size());
+                source_->AddReleasesFromResponse(res.body());
+                buff.consume(buff.size());
             }
             result_ = source_->GetStandardizeResult();
 

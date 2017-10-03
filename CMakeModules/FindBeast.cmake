@@ -1,7 +1,7 @@
-set(BEAST_SEARCH_PATH "${BEAST_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}/ThirdParty/Beast")
+set(BEAST_SEARCH_PATH "${BEAST_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}/ThirdParty/boost")
 
 find_path(BEAST_INCLUDE_DIR 
-    NAMES beast/http.hpp
+    NAMES boost/beast.hpp
     PATHS ${BEAST_SEARCH_PATH}
     PATH_SUFFIXES include)
 

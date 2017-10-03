@@ -30,6 +30,11 @@ target_compile_options(${LIB_NAME} PRIVATE "/MT$<$<CONFIG:Debug>:d>")
 #Unicode support
 target_compile_definitions(${LIB_NAME} PRIVATE -D_UNICODE -DUNICODE)
 
+#Disable safeseh
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
+set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
+set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
+
 target_link_libraries(${LIB_NAME} MusicTagger)
 target_link_libraries(${LIB_NAME} ${FOOBAR2000SDK_LIBRARIES})
 

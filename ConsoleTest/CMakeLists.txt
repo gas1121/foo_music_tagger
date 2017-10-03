@@ -15,6 +15,11 @@ add_executable(${EXE_NAME} ${SOURCE})
 #To keep C/C++->Code Generation->Runtime Library option same with foobar project.
 target_compile_options(${EXE_NAME} PRIVATE "/MT$<$<CONFIG:Debug>:d>")
 
+#Disable safeseh
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
+set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
+set (CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
+
 target_link_libraries(${EXE_NAME} MusicTagger)
 #target_link_libraries(${EXE_NAME} MusicTagger)
 target_link_libraries(${EXE_NAME} ${Boost_LIBRARIES})
